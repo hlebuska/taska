@@ -1,21 +1,32 @@
-import {
-    Paper,
-    Typography,
-    Box,
-    Divider,
-    TextField,
-    IconButton,
-    FormControlLabel,
-    Checkbox,
-    CircularProgress,
-} from '@mui/material';
+import { Paper, Typography, Box, TextField, FormControlLabel, Checkbox } from '@mui/material';
 import PrioritySlider from '../PrioritySlider/PrioritySlider';
-import { useState } from 'react';
-import CreateIcon from '@mui/icons-material/Create';
+import { useEffect, useRef, useState } from 'react';
+import './ToDoTask.scss';
 
 export default function ToDoTask() {
-    const [priorityValue, setPriorityValue] = useState<number>(0);
-    const [inProgress, setInProgress] = useState<boolean>(false);
+    const [priorityValue, setPriorityValue] = useState<number>(1);
+    const [completed, setCompleted] = useState<boolean>(false);
+    const [edit, setEdit] = useState<boolean>(false);
+    const [editPriority, setEditPriority] = useState<boolean>(false);
+
+    const wrapperRef = useRef<HTMLElement | null>(null);
+    const textFieldRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        if (edit) {
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }
+    }, [edit]);
+
+    function handleClickOutside(event: MouseEvent) {
+        if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+            setEdit(false);
+            setEditPriority(false);
+        }
+    }
 
     const handlePriorityUpdate = (value: number) => {
         setPriorityValue(value);
@@ -46,39 +57,79 @@ export default function ToDoTask() {
         }
     };
 
-    return (
-        <Paper sx={{ p: 1, mt: 1, display: 'flex', flexDirection: 'column', gap: 1 }} elevation={3}>
-            <Box>
-                {' '}
-                <FormControlLabel control={<Checkbox />} label="In progress" />
-            </Box>
+    const turnEdit = (): void => {
+        setEdit(true);
+        if (textFieldRef.current) {
+            textFieldRef.current.focus();
+        }
+    };
 
-            <TextField
-                id="outlined-multiline-static"
-                multiline
-                maxRows={8}
-                defaultValue=""
-                sx={{ p: 0 }}
-                InputProps={{
-                    sx: {
-                        padding: '8px', // Custom inner padding
-                    },
-                }}
-            />
-            <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Typography variant="body2">
+    const toggleEditPriority = (): void => {
+        setEditPriority((prevValue) => !prevValue);
+    };
+
+    return (
+        <Paper
+            sx={{ p: 1, mt: 1, display: 'flex', gap: 1, alignItems: 'start' }}
+            elevation={3}
+            onClick={() => turnEdit()}
+            ref={wrapperRef}
+            className="hover"
+        >
+            <Checkbox sx={{ '& .MuiSvgIcon-root': { fontSize: 20 }, width: 20, height: 30 }} />
+            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 1 }}>
+                <TextField
+                    inputRef={textFieldRef}
+                    id="standard-basic"
+                    multiline
+                    maxRows={8}
+                    defaultValue=""
+                    sx={{ p: 0, width: '100%' }}
+                    variant="standard"
+                    InputProps={{
+                        disableUnderline: true,
+                    }}
+                />
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            border: '2px solid #eeeeee',
+                            p: '2px',
+                            px: '5px',
+                            borderRadius: '8px',
+                            color: 'primary.main',
+                            fontWeight: 500,
+                        }}
+                    >
+                        Tommorow
+                        {/* Tommorow:{' '}
+                            <Typography sx={{ color: getPriorityColor() }} component="span">
+                                {getPriorityText()}
+                            </Typography> */}
+                    </Typography>
+
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            border: `2px solid #eeeeee`,
+                            p: '2px',
+                            px: '5px',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                        }}
+                        onClick={() => toggleEditPriority()}
+                    >
                         Priority:{' '}
-                        <Typography sx={{ color: getPriorityColor() }} component="span">
+                        <Typography variant="body2" sx={{ color: getPriorityColor() }} component="span">
                             {getPriorityText()}
                         </Typography>
                     </Typography>
-                    <IconButton aria-label="fingerprint">
-                        <CreateIcon />
-                    </IconButton>
                 </Box>
 
-                <PrioritySlider onSliderChange={handlePriorityUpdate} />
+                {editPriority && edit && (
+                    <PrioritySlider onSliderChange={handlePriorityUpdate} initValue={priorityValue} />
+                )}
             </Box>
         </Paper>
     );

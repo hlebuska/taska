@@ -37,8 +37,6 @@ export default function Main() {
                     </Grid>
                     <Grid item xs={6}>
                         <ToDoTask />
-                        <ToDoTask />
-                        <ToDoTask />
                     </Grid>
                 </Grid>
             </Box>

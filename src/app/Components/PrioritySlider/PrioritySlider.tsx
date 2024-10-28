@@ -5,10 +5,11 @@ import './PrioritySlider.scss';
 
 interface IProps {
     onSliderChange: (value: number) => void;
+    initValue: number;
 }
 
-export default function PrioritySlider({ onSliderChange }: IProps) {
-    const [value, setValue] = useState<number>(1);
+export default function PrioritySlider({ onSliderChange, initValue }: IProps) {
+    const [value, setValue] = useState<number>(initValue);
     const colors: string[] = ['success.light', 'warning.light', 'error.light'];
     const thumbColors = ['success.dark', 'warning.dark', 'error.dark'];
     const bgColors = ['success.main', 'warning.main', 'error.main'];
@@ -78,10 +79,10 @@ export default function PrioritySlider({ onSliderChange }: IProps) {
                 sx={{
                     '& .MuiSlider-mark': {},
                     '& .MuiSlider-thumb': {
-                        width: value === 2 ? '3.5px' : '3px', // Adjust width
-                        height: '20px', // Adjust height
+                        width: value === 2 ? '3.5px' : '3px',
+                        height: '20px',
                         borderRadius: 0,
-                        bgcolor: thumbColors[value - 1], // Color of the thumb
+                        bgcolor: thumbColors[value - 1],
                     },
                     '& .MuiSlider-track': {
                         opacity: 0,
