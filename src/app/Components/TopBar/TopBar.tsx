@@ -1,6 +1,8 @@
-import { Box, Button, Divider, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
+import MenuIcon from '@mui/icons-material/Menu';
+import Image from 'next/image';
 
 export default function TopBar() {
     return (
@@ -19,9 +21,19 @@ export default function TopBar() {
                 borderBottom: '1px solid #E0E0E0',
             }}
         >
-            <Typography variant="h5" gutterBottom sx={{ margin: 0, color: 'primary.main' }}>
-                Taska
-            </Typography>
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <IconButton aria-label="delete">
+                    <MenuIcon />
+                </IconButton>
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                    {' '}
+                    <Image src="/taskaLogo.svg" alt="Taska Logo" width={36} height={36} />
+                    <Typography variant="h5" gutterBottom sx={{ margin: 0, color: 'primary.main', fontWeight: 400 }}>
+                        Taska
+                    </Typography>
+                </Box>
+            </Box>
+
             <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button variant="outlined" startIcon={<PersonIcon />}>
                     Account
