@@ -1,5 +1,5 @@
 import { DraggableLocation } from 'react-beautiful-dnd';
-import { TasksMap } from './types';
+import { TaskMap } from './types';
 
 // a little function to help us with reordering the result
 export const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
@@ -10,14 +10,18 @@ export const reorder = (list: any[], startIndex: number, endIndex: number): any[
     return result;
 };
 
-export const reorderTasks = (tasks: TasksMap, source: DraggableLocation, destination: DraggableLocation) => {
+export const reorderTasks = (tasks: TaskMap, source: DraggableLocation, destination: DraggableLocation) => {
     const current = [...tasks[source.droppableId]];
     const next = [...tasks[destination.droppableId]];
     const target = current[source.index];
+    // console.log('current', current);
+    // console.log('next', next);
+    // console.log('target', target);
 
     // moving to same list
     if (source.droppableId === destination.droppableId) {
         const reordered = reorder(current, source.index, destination.index);
+
         return {
             ...tasks,
             [source.droppableId]: reordered,

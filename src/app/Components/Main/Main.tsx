@@ -5,30 +5,41 @@ import interactionPlugin, { Draggable as FCDraggable, DropArg } from '@fullcalen
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { useEffect, useState } from 'react';
 import { EventSourceInput } from '@fullcalendar/core/index.js';
-import { AppBar, Box, Divider, Grid, Typography } from '@mui/material';
+import { AppBar, Box, Divider, Typography } from '@mui/material';
 import ToDoTask from '../ToDoTask/ToDoTask';
 import { TaskMap, ITask } from '../../types';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { reorderTasks } from '../../util';
 
 export default function Main() {
     const [tasksMap, setTasksMap] = useState<TaskMap>({
         a: [
-            { id: '1', value: 'task1' },
+            { id: '1', value: 'task1 1 11 11' },
             { id: '2', value: 'task2' },
             { id: '3', value: 'task3' },
         ],
-        b: [{ id: '4', value: 'heloo' }],
-        c: [
-            { id: '5', value: 'tafvaflkjgalgj' },
-            { id: '6', value: 'fsdalfkal' },
+        b: [
+            { id: '4', value: 'TASK 4' },
+            { id: '5', value: 'task5' },
         ],
     });
+
+    const updateTaskText = (id: string, text: string) => {
+        const newTasksMap = { ...tasksMap };
+
+        for (const listKey in tasksMap) {
+            const taskIndex = newTasksMap[listKey].findIndex((task: ITask) => task.id === id);
+            if (taskIndex != -1) {
+                newTasksMap[listKey][taskIndex].value = text;
+                setTasksMap(newTasksMap);
+            }
+        }
+    };
 
     const [events, setEvents] = useState([
         { title: 'event 1', id: '1' },
         { title: 'event 2', id: '2' },
-        { title: 'event 3', id: '3' },
+        { title: 'event 3', id: '3  ' },
         { title: 'event 4', id: '4' },
         { title: 'event 5', id: '5' },
     ]);
@@ -51,8 +62,7 @@ export default function Main() {
                     let title = eventEl.getAttribute('title');
                     let id = eventEl.getAttribute('data');
                     let start = eventEl.getAttribute('start');
-
-                    // draggableEl.addEventListener('drag', () => console.log('Element clicked'));
+                    
                     return { title, id, start };
                 },
             });
@@ -125,13 +135,11 @@ export default function Main() {
                             if (!destination) {
                                 return;
                             }
-
                             setTasksMap(reorderTasks(tasksMap, source, destination));
                         }}
                     >
                         <Box sx={{ display: 'flex', gap: 3 }}>
                             {Object.entries(tasksMap).map(([listName, tasksList]) => (
-                                // <AuthorList internalScroll key={k} listId={k} listType="CARD" colors={v} />
                                 <Droppable
                                     droppableId={listName}
                                     type={'Some'}
@@ -142,17 +150,27 @@ export default function Main() {
                                     {(dropProvided) => (
                                         <div {...dropProvided.droppableProps} style={{}}>
                                             <Box
-                                                sx={{ display: 'flex', flexDirection: 'column' }}
+                                                sx={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    backgroundColor: 'gray',
+                                                    minHeight: '100px',
+                                                    minWidth: '100px',
+                                                    padding: 1,
+                                                }}
                                                 ref={dropProvided.innerRef}
                                             >
-                                                {tasksList.map((task: ITask, index) => (
-                                                    <ToDoTask
-                                                        id={task.id}
-                                                        text={task.value}
-                                                        key={index}
-                                                        index={index}
-                                                    />
-                                                ))}
+                                                {tasksList.map((task: ITask, index) => {
+                                                    return (
+                                                        <ToDoTask
+                                                            id={task.id}
+                                                            text={task.value}
+                                                            key={index}
+                                                            index={index}
+                                                            onUpdate={updateTaskText}
+                                                        />
+                                                    );
+                                                })}
                                                 {dropProvided.placeholder}
                                             </Box>
                                         </div>
