@@ -1,8 +1,6 @@
 import { Box, Paper, Slider } from '@mui/material';
 import { useState } from 'react';
 
-import './PrioritySlider.scss';
-
 interface IProps {
     onSliderChange: (value: number) => void;
     initValue: number;
@@ -11,7 +9,7 @@ interface IProps {
 export default function PrioritySlider({ onSliderChange, initValue }: IProps) {
     const [value, setValue] = useState<number>(initValue);
     const colors: string[] = ['success.light', 'warning.light', 'error.light'];
-    const thumbColors = ['success.dark', 'warning.dark', 'error.dark'];
+    const thumbColors = ['success.dark', 'warning.dark', 'error.dark']; 
     const bgColors = ['success.main', 'warning.main', 'error.main'];
 
     const handleValueChange = (event) => {
