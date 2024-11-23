@@ -1,12 +1,14 @@
+"use client";
 import { configureStore } from "@reduxjs/toolkit";
+import tasksReducer from "@/redux/slices/tasksSlice";
+import listsReducer from "@/redux/slices/listsSlice";
 
-export const makeStore = () => {
-  return configureStore({
-    reducer: {},
-  });
-};
+export const store = configureStore({
+  reducer: {
+    tasks: tasksReducer,
+    lists: listsReducer,
+  },
+});
 
-export type AppStore = ReturnType<typeof makeStore>;
-
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
