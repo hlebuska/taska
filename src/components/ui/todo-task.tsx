@@ -1,63 +1,109 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import ActivatedInput from "@/components/ui/activated-input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { useAppDispatch, useEditMode } from "@/lib/hooks";
+import { updateTask, setTaskCompletion } from "@/redux/slices/tasksSlice";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface IProps {
   text: string;
   id: string;
   index: number;
-  onUpdate: (id: string, text: string) => void;
+  isCompleted: boolean;
+  isDraggable: boolean;
 }
 
-export default function ToDoTask({ text, id, index, onUpdate }: IProps) {
-  const [textValue, setTextValue] = useState<string>(text);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+export default function ToDoTask({
+  text,
+  id,
+  index,
+  isCompleted,
+  isDraggable,
+}: IProps) {
+  const dispatch = useAppDispatch();
 
-  const wrapperRef = useRef<HTMLElement | null>(null);
-  const textFieldRef = useRef<HTMLInputElement | null>(null);
+  const { textValue, setTextValue, isEdit, turnOnEdit, wrapperRef, inputRef } =
+    useEditMode({
+      text,
+      onSave: (newValue) => {
+        dispatch(updateTask({ id, text: newValue }));
+      },
+    });
 
-  function handleClickOutside(event: MouseEvent) {
-    if (
-      wrapperRef.current &&
-      !wrapperRef.current.contains(event.target as Node)
-    ) {
-      setIsEdit(false);
-    }
-  }
+  const TaskContent = (
+    <div
+      elevation={3}
+      onClick={() => turnOnEdit()}
+      ref={wrapperRef}
+      className={`flex justify-between items-start border mt-3 rounded-md border-white  backdrop-blur-sm bg px-2 py-3 text-gray-900 shadow-inner shadow-white/10 font-normal ${isCompleted ? "border-gray-200 mx-2 bg-opacity-40 bg-gray-100" : "bg-white mt-3  bg-opacity-90"}`}
+    >
+      <div
+        className={`flex flex-col gap-1 w-10/12 ${isCompleted ? "line-through" : ""}`}
+      >
+        {
+          <ActivatedInput
+            ref={inputRef}
+            value={textValue}
+            active={isEdit}
+            onChange={(event) => setTextValue(event.target.value)}
+          ></ActivatedInput>
+        }
+        <div className="mt-2 flex gap-1">
+          <Button variant="outline" size={"xxs"} className="text-xs">
+            Tommorow
+          </Button>
+        </div>
+      </div>
+      <Checkbox
+        checked={isCompleted}
+        onCheckedChange={(checked) =>
+          dispatch(
+            setTaskCompletion({ taskID: id, isCompleted: checked as boolean }),
+          )
+        }
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <MoreVertIcon fontSize="small" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem className="flex gap-1 items-center leading-none">
+            Edit
+          </DropdownMenuItem>
 
-  const turnIsEdit = (): void => {
-    setIsEdit(true);
-    setTimeout(() => {
-      if (textFieldRef.current) {
-        textFieldRef.current.focus();
-        const length = textValue.length;
-        textFieldRef.current.setSelectionRange(length, length);
-      }
-    }, 50);
-  };
+          <DropdownMenuItem className="flex gap-1 items-center leading-none">
+            Duplicate
+          </DropdownMenuItem>
 
-  const updateTextValue = (text: string): void => {
-    setTextValue(text);
-    onUpdate(id, text);
-  };
+          <DropdownMenuItem className="flex gap-1 items-center leading-none">
+            Move to another list
+          </DropdownMenuItem>
 
-  useEffect(() => {
-    setTextValue(text);
-  }, [text]);
+          <DropdownMenuItem
+            className="flex gap-1 items-center leading-none"
+            onClick={() => openDialog()}
+          >
+            <div>
+              <DeleteIcon fontSize="small" />
+            </div>
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
 
-  useEffect(() => {
-    if (isEdit) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
-  }, [isEdit]);
-
-  return (
+  return isDraggable ? (
     <Draggable key={id} draggableId={id} index={index}>
       {(dragProvided) => (
         <div
@@ -65,31 +111,11 @@ export default function ToDoTask({ text, id, index, onUpdate }: IProps) {
           {...dragProvided.draggableProps}
           ref={dragProvided.innerRef}
         >
-          <div
-            elevation={3}
-            onClick={() => turnIsEdit()}
-            ref={wrapperRef}
-            className="flex items-start gap-2 border mt-3 rounded-md border-white bg-white bg-opacity-90 backdrop-blur-sm bg  px-2 py-3 text-gray-900 shadow-inner shadow-white/10 font-normal "
-          >
-            <Checkbox />
-            <div className="w-48 flex flex-col gap-1">
-              {
-                <ActivatedInput
-                  ref={textFieldRef}
-                  value={textValue}
-                  active={isEdit}
-                  onChange={(event) => updateTextValue(event.target.value)}
-                ></ActivatedInput>
-              }
-              <div className="mt-2 flex gap-1">
-                <Button variant="outline" size={"xxs"} className="text-xs">
-                  Tommorow
-                </Button>
-              </div>
-            </div>
-          </div>
+          {TaskContent}
         </div>
       )}
     </Draggable>
+  ) : (
+    <div>{TaskContent}</div>
   );
 }

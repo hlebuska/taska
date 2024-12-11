@@ -14,13 +14,13 @@ const ActivatedInput = forwardRef<HTMLTextAreaElement, IProps>(
         {active ? (
           <TextareaAutosize
             ref={ref}
-            className="w-full rounded-md resize-none leading-none bg-transparent"
+            className="w-full resize-none leading-none bg-transparent text-sm"
             value={value}
             onChange={onChange}
             minRows={1}
           ></TextareaAutosize>
         ) : (
-          <p className="w-full h-[19px] whitespace-pre-wrap leading-none">
+          <p className="break-normal w-full leading-none whitespace-pre-line text-sm min-h-[16px]">
             {value}
           </p>
         )}

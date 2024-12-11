@@ -1,10 +1,3 @@
-// export type IListTaskMap = {
-//   [listID: string]: {
-//     name: string;
-//     tasks: ITask[];
-//   };
-// };
-
 export type ListMapType = {
   [listID: string]: IList;
 };
