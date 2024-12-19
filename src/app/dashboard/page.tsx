@@ -6,6 +6,7 @@ import { DragDropContext } from "@hello-pangea/dnd";
 import { addList, reorderTasks } from "@/lib/utils";
 import { useAppSelector } from "@/lib/hooks";
 import ToDoListCreator from "./components/to-do-list-creator";
+import Calendar from "./components/calendar";
 
 export default function DashboardPage() {
   const tasks = useAppSelector((state) => state.tasks);
@@ -13,7 +14,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <div className="mt-[56px] flex h-screen w-4/5 flex-col overflow-scroll bg-gradient-to-tr from-red-300 to-indigo-300">
+      <div className="mt-[56px] flex h-screen w-3/5 flex-col overflow-scroll bg-gradient-to-tr from-red-300 to-indigo-300">
         <div className="bg-white w-full h-24 border-b border-gray-300">
           <h6>Project Name</h6>
         </div>
@@ -40,6 +41,9 @@ export default function DashboardPage() {
             </div>
           </DragDropContext>
         </div>
+      </div>
+      <div className="w-2/5">
+        <Calendar />
       </div>
     </>
   );
