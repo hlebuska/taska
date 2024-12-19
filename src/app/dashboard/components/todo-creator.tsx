@@ -3,29 +3,11 @@ import AddIcon from "@mui/icons-material/Add";
 import { Button } from "../../../components/ui/button";
 import ActivatedInput from "../../../components/ui/activated-input";
 import { addTask } from "@/lib/utils";
+import { ChangeEvent } from "react";
 
 interface IProps {
   listID: string;
 }
-
-/**
- * ## ToDoCreator Component
- *
- * This component allows the user to create new tasks. It provides an input field for entering
- * task text and a button to trigger the task creation process.
- *
- * - The component uses the `useEditMode` hook to manage its edit mode behavior.
- * - When the user presses Enter or clicks outside the input field, the task is added via the `onAdd` callback.
- *
- * ## Parameters
- * @param {IProps} props - The props object for the component.
- *
- * ## Props
- * @typedef {Object} IPropsan
- *
- * ## Returns
- * @returns {JSX.Element} - A JSX element representing the task creation UI.
- */
 
 export default function ToDoCreator({ listID }: IProps) {
   const { textValue, setTextValue, isEdit, turnOnEdit, wrapperRef, inputRef } =
@@ -36,6 +18,10 @@ export default function ToDoCreator({ listID }: IProps) {
       },
       onEnter: () => addTask(listID, textValue),
     });
+
+  const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setTextValue(event.target.value);
+  };
 
   return (
     <div
@@ -55,7 +41,7 @@ export default function ToDoCreator({ listID }: IProps) {
             ref={inputRef}
             active={isEdit}
             value={textValue}
-            onChange={(event) => setTextValue(event.target.value)}
+            onChange={(event) => handleTextChange(event)}
           />
         </div>
       )}

@@ -13,6 +13,7 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteTask, setTaskCompletion, updateTask } from "@/lib/utils";
+import { ChangeEvent } from "react";
 
 interface IProps {
   text: string;
@@ -42,8 +43,14 @@ export default function ToDoTask({
       },
     });
 
+  const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setTextValue(event.target.value);
+  };
   const handleDeleteTask = () => {
     deleteTask(taskID, listID);
+  };
+  const handleCompleteTask = (checked: boolean) => {
+    setTaskCompletion(taskID, checked);
   };
 
   const TaskContent = (
@@ -61,7 +68,7 @@ export default function ToDoTask({
             ref={inputRef}
             value={textValue}
             active={isEdit}
-            onChange={(event) => setTextValue(event.target.value)}
+            onChange={(event) => handleTextChange(event)}
           ></ActivatedInput>
         }
         <div className="mt-2 flex gap-1">
@@ -72,9 +79,7 @@ export default function ToDoTask({
       </div>
       <Checkbox
         checked={isCompleted}
-        onCheckedChange={(checked) =>
-          setTaskCompletion(taskID, checked as boolean)
-        }
+        onCheckedChange={(checked) => handleCompleteTask(checked as boolean)}
       />
       <DropdownMenu>
         <DropdownMenuTrigger>

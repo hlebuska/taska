@@ -31,7 +31,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { deleteList, updateListName } from "@/lib/utils";
 
 interface IProps {
@@ -66,6 +66,13 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
     return counter;
   }, 0);
 
+  const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setTextValue(event.target.value);
+  };
+  const handleDeleteTask = () => {
+    deleteList(listID);
+  };
+
   return (
     <div className="flex flex-col">
       <Droppable
@@ -90,7 +97,7 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
                   ref={inputRef}
                   value={textValue}
                   active={isEdit}
-                  onChange={(event) => setTextValue(event.target.value)}
+                  onChange={(event) => handleTextChange(event)}
                 ></ActivatedInput>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
@@ -182,7 +189,7 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-400 hover:bg-red-500"
-              onClick={() => deleteList(listID)}
+              onClick={() => handleDeleteTask()}
             >
               Delete
             </AlertDialogAction>
