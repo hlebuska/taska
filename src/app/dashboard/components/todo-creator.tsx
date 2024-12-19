@@ -1,34 +1,46 @@
 import { useEditMode } from "@/lib/hooks";
 import AddIcon from "@mui/icons-material/Add";
-import { Button } from "./button";
-import ActivatedInput from "./activated-input";
+import { Button } from "../../../components/ui/button";
+import ActivatedInput from "../../../components/ui/activated-input";
+import { addTask } from "@/lib/utils";
 
 interface IProps {
-  onAdd: (text: string) => void;
+  listID: string;
 }
 
-export default function ToDoCreator({ onAdd }: IProps) {
+/**
+ * ## ToDoCreator Component
+ *
+ * This component allows the user to create new tasks. It provides an input field for entering
+ * task text and a button to trigger the task creation process.
+ *
+ * - The component uses the `useEditMode` hook to manage its edit mode behavior.
+ * - When the user presses Enter or clicks outside the input field, the task is added via the `onAdd` callback.
+ *
+ * ## Parameters
+ * @param {IProps} props - The props object for the component.
+ *
+ * ## Props
+ * @typedef {Object} IPropsan
+ *
+ * ## Returns
+ * @returns {JSX.Element} - A JSX element representing the task creation UI.
+ */
+
+export default function ToDoCreator({ listID }: IProps) {
   const { textValue, setTextValue, isEdit, turnOnEdit, wrapperRef, inputRef } =
     useEditMode({
       text: "",
-      onSave: (newValue) => {
+      onClickOutside: () => {
         setTextValue("");
       },
+      onEnter: () => addTask(listID, textValue),
     });
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      setTextValue("");
-      onAdd(textValue);
-    }
-  };
 
   return (
     <div
       ref={wrapperRef}
       className={`bg-white border border-opacity-20 border-white  flex mt-3 flex-col justify-start rounded-md ${isEdit ? "bg-opacity-90" : " bg-opacity-50"}`}
-      onKeyDown={handleKeyDown}
     >
       <Button
         variant={"ghost"}

@@ -1,5 +1,5 @@
 import { ListMapType } from "@/types";
-import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: ListMapType = {
   list1: {
@@ -18,17 +18,17 @@ const listsSlice = createSlice({
   name: "listsSlice",
   initialState,
   reducers: {
-    setLists: (state, action: PayloadAction<ListMapType>) => {
+    setListsAction: (state, action: PayloadAction<ListMapType>) => {
       return action.payload;
     },
-    updateList: (
+    updateListNameAction: (
       state,
       action: PayloadAction<{ id: string; name: string }>,
     ) => {
       const { id, name } = action.payload;
       state[id].name = name;
     },
-    addList: (state, action: PayloadAction<{ listID: string }>) => {
+    addListAction: (state, action: PayloadAction<{ listID: string }>) => {
       const { listID } = action.payload;
       state[listID] = {
         id: listID,
@@ -36,11 +36,12 @@ const listsSlice = createSlice({
         taskIDs: [],
       };
     },
-    removeList: (state, action: PayloadAction<{ id: string }>) => {
-      const { id } = action.payload;
-      delete state[id];
+    deleteListAction: (state, action: PayloadAction<{ listID: string }>) => {
+      const { listID } = action.payload;
+
+      delete state[listID];
     },
-    addTaskToList: (
+    addTaskToListAction: (
       state,
       action: PayloadAction<{ taskID: string; listID: string }>,
     ) => {
@@ -50,6 +51,11 @@ const listsSlice = createSlice({
   },
 });
 
-export const { setLists, updateList, addList, removeList, addTaskToList } =
-  listsSlice.actions;
+export const {
+  setListsAction,
+  updateListNameAction,
+  addListAction,
+  deleteListAction,
+  addTaskToListAction,
+} = listsSlice.actions;
 export default listsSlice.reducer;

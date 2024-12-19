@@ -33,17 +33,17 @@ const tasksSlice = createSlice({
   name: "tasksSlice",
   initialState,
   reducers: {
-    setTasks: (state, action: PayloadAction<TaskMapType>) => {
+    setTasksAction: (state, action: PayloadAction<TaskMapType>) => {
       return action.payload;
     },
-    updateTask: (
+    updateTaskAction: (
       state,
       action: PayloadAction<{ id: string; text: string }>,
     ) => {
       const { id, text } = action.payload;
       state[id].text = text;
     },
-    addTask: (
+    addTaskAction: (
       state,
       action: PayloadAction<{
         listID: string;
@@ -59,16 +59,21 @@ const tasksSlice = createSlice({
         isCompleted: false,
       };
     },
-    setTaskCompletion: (
+    setTaskCompletionAction: (
       state,
       action: PayloadAction<{ taskID: string; isCompleted: boolean }>,
     ) => {
       const { taskID, isCompleted } = action.payload;
+
       state[taskID].isCompleted = isCompleted;
     },
   },
 });
 
-export const { setTasks, updateTask, addTask, setTaskCompletion } =
-  tasksSlice.actions;
+export const {
+  setTasksAction,
+  updateTaskAction,
+  addTaskAction,
+  setTaskCompletionAction,
+} = tasksSlice.actions;
 export default tasksSlice.reducer;

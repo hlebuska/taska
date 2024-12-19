@@ -4,22 +4,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import WestIcon from "@mui/icons-material/West";
 import EastIcon from "@mui/icons-material/East";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ToDoTask from "./todo-task";
+import ToDoTask from "@/app/dashboard/components/todo-task";
 import { ITask } from "@/types";
-import ActivatedInput from "./activated-input";
+import ActivatedInput from "@/components/ui/activated-input";
 import { useEditMode } from "@/lib/hooks";
-import ToDoCreator from "@/components/ui/todo-creator";
-import {
-  updateList,
-  removeList,
-  addTaskToList,
-} from "@/redux/slices/listsSlice";
-import { useDispatch } from "react-redux";
+import ToDoCreator from "@/app/dashboard/components/todo-creator";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -39,8 +32,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useState } from "react";
-import { addTask } from "@/redux/slices/tasksSlice";
-import { nanoid } from "@reduxjs/toolkit";
+import { deleteList, updateListName } from "@/lib/utils";
 
 interface IProps {
   listID: string;
@@ -49,9 +41,17 @@ interface IProps {
 }
 
 export default function ToDoList({ listID, listName, listTasks }: IProps) {
-  const dispatch = useDispatch();
-
   const [isOpen, setIsOpen] = useState(false);
+  const { textValue, setTextValue, isEdit, turnOnEdit, wrapperRef, inputRef } =
+    useEditMode({
+      text: listName,
+      onClickOutside: () => {
+        updateListName(listID, textValue);
+      },
+      onEnter: () => {
+        updateListName(listID, textValue);
+      },
+    });
 
   const openDialog = () => {
     setIsOpen(true);
@@ -59,30 +59,12 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
   const closeDialog = () => {
     setIsOpen(false);
   };
-  const deleteList = () => {
-    dispatch(removeList({ id: listID }));
-  };
-  const handleAddTask = (text: string) => {
-    const id = "list-" + nanoid(8);
-    dispatch(addTask({ listID: id, taskID: id, initText: text }));
-    dispatch(addTaskToList({ listID: listID, taskID: id }));
-    //throw focus on input
-  };
   const completedTasksCount = listTasks.reduce((counter, task) => {
     if (task.isCompleted) {
       counter += 1;
     }
     return counter;
   }, 0);
-
-  const { textValue, setTextValue, isEdit, turnOnEdit, wrapperRef, inputRef } =
-    useEditMode({
-      text: listName,
-      onSave: (newValue) => {
-        dispatch(updateList({ id: listID, name: newValue }));
-        //TODO MIGHT NEED TO UPDATE useEffect (probably not)
-      },
-    });
 
   return (
     <div className="flex flex-col">
@@ -115,8 +97,6 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
                     <MoreVertIcon fontSize="small" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-
                     <DropdownMenuItem className="flex gap-1 items-center leading-none">
                       <WestIcon fontSize="small" />
                       Move left
@@ -139,20 +119,13 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              {/* <Button
-                variant={"ghost"}
-                className="bg-white bg-opacity-50 border border-opacity-20 border-white py-1 text-xs h-8 w-full flex mt-3 justify-start"
-                onClick={() => handleAddTask()}
-              >
-                <AddIcon /> Add task
-              </Button> */}
-              <ToDoCreator onAdd={handleAddTask} />
+              <ToDoCreator listID={listID} />
 
               {listTasks.map((task: ITask, index) => {
                 return (
                   !task.isCompleted && (
                     <ToDoTask
-                      id={task.id}
+                      taskID={task.id}
                       text={task.text}
                       key={index}
                       index={index}
@@ -162,7 +135,6 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
                   )
                 );
               })}
-
               {dropProvided.placeholder}
             </div>
           </div>
@@ -179,7 +151,7 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
             return (
               task.isCompleted && (
                 <ToDoTask
-                  id={task.id}
+                  taskID={task.id}
                   text={task.text}
                   key={index}
                   index={index}
@@ -208,7 +180,7 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-400 hover:bg-red-500"
-              onClick={() => deleteList()}
+              onClick={() => deleteList(listID)}
             >
               Delete
             </AlertDialogAction>

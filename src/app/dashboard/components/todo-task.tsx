@@ -3,21 +3,20 @@ import { Draggable } from "@hello-pangea/dnd";
 import ActivatedInput from "@/components/ui/activated-input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { useAppDispatch, useEditMode } from "@/lib/hooks";
-import { updateTask, setTaskCompletion } from "@/redux/slices/tasksSlice";
+import { useEditMode } from "@/lib/hooks";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { setTaskCompletion, updateTask } from "@/lib/utils";
 
 interface IProps {
   text: string;
-  id: string;
+  taskID: string;
   index: number;
   isCompleted: boolean;
   isDraggable: boolean;
@@ -25,18 +24,19 @@ interface IProps {
 
 export default function ToDoTask({
   text,
-  id,
+  taskID,
   index,
   isCompleted,
   isDraggable,
 }: IProps) {
-  const dispatch = useAppDispatch();
-
   const { textValue, setTextValue, isEdit, turnOnEdit, wrapperRef, inputRef } =
     useEditMode({
       text,
-      onSave: (newValue) => {
-        dispatch(updateTask({ id, text: newValue }));
+      onClickOutside: () => {
+        updateTask(taskID, text);
+      },
+      onEnter: () => {
+        updateTask(taskID, text);
       },
     });
 
@@ -67,9 +67,7 @@ export default function ToDoTask({
       <Checkbox
         checked={isCompleted}
         onCheckedChange={(checked) =>
-          dispatch(
-            setTaskCompletion({ taskID: id, isCompleted: checked as boolean }),
-          )
+          setTaskCompletion(taskID, checked as boolean)
         }
       />
       <DropdownMenu>
@@ -77,21 +75,9 @@ export default function ToDoTask({
           <MoreVertIcon fontSize="small" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem className="flex gap-1 items-center leading-none">
-            Edit
-          </DropdownMenuItem>
-
-          <DropdownMenuItem className="flex gap-1 items-center leading-none">
-            Duplicate
-          </DropdownMenuItem>
-
-          <DropdownMenuItem className="flex gap-1 items-center leading-none">
-            Move to another list
-          </DropdownMenuItem>
-
           <DropdownMenuItem
             className="flex gap-1 items-center leading-none"
-            onClick={() => openDialog()}
+            onClick={() => console.log()}
           >
             <div>
               <DeleteIcon fontSize="small" />
@@ -104,7 +90,7 @@ export default function ToDoTask({
   );
 
   return isDraggable ? (
-    <Draggable key={id} draggableId={id} index={index}>
+    <Draggable key={taskID} draggableId={taskID} index={index}>
       {(dragProvided) => (
         <div
           {...dragProvided.dragHandleProps}

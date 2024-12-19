@@ -1,23 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import ToDoList from "@/components/ui/todo-list";
+import ToDoList from "@/app/dashboard/components/todo-list";
 import AddIcon from "@mui/icons-material/Add";
 import { DragDropContext } from "@hello-pangea/dnd";
-import { reorderTasks } from "@/lib/utils";
-import { useAppSelector, useAppDispatch } from "@/lib/hooks";
-import { setLists, addList } from "@/redux/slices/listsSlice";
-import { nanoid } from "@reduxjs/toolkit";
+import { addList, reorderTasks } from "@/lib/utils";
+import { useAppSelector } from "@/lib/hooks";
 
 export default function DashboardPage() {
   const tasks = useAppSelector((state) => state.tasks);
   const lists = useAppSelector((state) => state.lists);
-
-  const dispatch = useAppDispatch();
-
-  const handleAddList = () => {
-    const id = "list-" + nanoid(8);
-    dispatch(addList({ listID: id }));
-  };
 
   return (
     <>
@@ -31,7 +22,7 @@ export default function DashboardPage() {
               if (!destination) {
                 return;
               }
-              dispatch(setLists(reorderTasks(lists, source, destination)));
+              reorderTasks(lists, source, destination);
             }}
           >
             <div className="flex h-full gap-3">
@@ -47,7 +38,7 @@ export default function DashboardPage() {
               <Button
                 variant={"outline"}
                 className="mt-2"
-                onClick={() => handleAddList()}
+                onClick={() => addList()}
               >
                 <AddIcon /> Add list
               </Button>
