@@ -126,6 +126,7 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
                   !task.isCompleted && (
                     <ToDoTask
                       taskID={task.id}
+                      listID={listID}
                       text={task.text}
                       key={index}
                       index={index}
@@ -151,6 +152,7 @@ export default function ToDoList({ listID, listName, listTasks }: IProps) {
             return (
               task.isCompleted && (
                 <ToDoTask
+                  listID={listID}
                   taskID={task.id}
                   text={task.text}
                   key={index}

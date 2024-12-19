@@ -5,25 +5,25 @@ import { current } from "immer";
 const initialState: TaskMapType = {
   task1: {
     id: "task1",
-    listId: "list1",
+    listID: "list1",
     text: "task1",
     isCompleted: true,
   },
   task2: {
     id: "task2",
-    listId: "list1",
+    listID: "list1",
     text: "task2",
     isCompleted: true,
   },
   task3: {
     id: "task3",
-    listId: "list2",
+    listID: "list2",
     text: "task3",
     isCompleted: false,
   },
   task4: {
     id: "task4",
-    listId: "list1",
+    listID: "list1",
     text: "task4",
     isCompleted: false,
   },
@@ -54,7 +54,7 @@ const tasksSlice = createSlice({
       const { listID, taskID, initText } = action.payload;
       state[taskID] = {
         id: taskID,
-        listId: listID,
+        listID: listID,
         text: initText,
         isCompleted: false,
       };
@@ -67,6 +67,23 @@ const tasksSlice = createSlice({
 
       state[taskID].isCompleted = isCompleted;
     },
+    deleteTaskAction: (state, action: PayloadAction<{ taskID: string }>) => {
+      const { taskID } = action.payload;
+      delete state[taskID];
+    },
+    deleteTasksByListAction: (
+      state,
+      action: PayloadAction<{ listID: string }>,
+    ) => {
+      const { listID } = action.payload;
+
+      Object.keys(state).forEach((taskKey) => {
+        if (state[taskKey].listID == listID) {
+          delete state[taskKey];
+        }
+      });
+      console.log(current(state));
+    },
   },
 });
 
@@ -75,5 +92,7 @@ export const {
   updateTaskAction,
   addTaskAction,
   setTaskCompletionAction,
+  deleteTaskAction,
+  deleteTasksByListAction,
 } = tasksSlice.actions;
 export default tasksSlice.reducer;

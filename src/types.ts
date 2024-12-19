@@ -14,7 +14,7 @@ export interface IList {
 
 export interface ITask {
   id: string;
-  listId: string;
+  listID: string;
   text: string;
   isCompleted: boolean;
 }

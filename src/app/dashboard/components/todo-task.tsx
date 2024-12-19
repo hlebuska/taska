@@ -12,11 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { setTaskCompletion, updateTask } from "@/lib/utils";
+import { deleteTask, setTaskCompletion, updateTask } from "@/lib/utils";
 
 interface IProps {
   text: string;
   taskID: string;
+  listID: string;
   index: number;
   isCompleted: boolean;
   isDraggable: boolean;
@@ -28,6 +29,7 @@ export default function ToDoTask({
   index,
   isCompleted,
   isDraggable,
+  listID,
 }: IProps) {
   const { textValue, setTextValue, isEdit, turnOnEdit, wrapperRef, inputRef } =
     useEditMode({
@@ -39,6 +41,10 @@ export default function ToDoTask({
         updateTask(taskID, text);
       },
     });
+
+  const handleDeleteTask = () => {
+    deleteTask(taskID, listID);
+  };
 
   const TaskContent = (
     <div
@@ -77,7 +83,7 @@ export default function ToDoTask({
         <DropdownMenuContent>
           <DropdownMenuItem
             className="flex gap-1 items-center leading-none"
-            onClick={() => console.log()}
+            onClick={() => handleDeleteTask()}
           >
             <div>
               <DeleteIcon fontSize="small" />

@@ -5,6 +5,8 @@ import { twMerge } from "tailwind-merge";
 import { store } from "@/redux/store";
 import {
   addTaskAction,
+  deleteTaskAction,
+  deleteTasksByListAction,
   setTaskCompletionAction,
   updateTaskAction,
 } from "@/redux/slices/tasksSlice";
@@ -14,6 +16,7 @@ import {
   addListAction,
   updateListNameAction,
   setListsAction,
+  deleteTaskFromListAction,
 } from "@/redux/slices/listsSlice";
 import { nanoid } from "@reduxjs/toolkit";
 
@@ -26,7 +29,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 //Tasks logic
-
 export const reorderTasks = (
   taskMap: ListMapType,
   source: DraggableLocation,
@@ -90,8 +92,12 @@ export const setTaskCompletion = (taskID: string, value: boolean) => {
   );
 };
 
-//List logic
+export const deleteTask = (taskID: string, listID: string) => {
+  store.dispatch(deleteTaskFromListAction({ taskID: taskID, listID: listID }));
+  store.dispatch(deleteTaskAction({ taskID: taskID }));
+};
 
+//List logic
 export const addList = () => {
   const id = "list-" + nanoid(8);
   store.dispatch(addListAction({ listID: id }));
@@ -103,4 +109,5 @@ export const updateListName = (listID: string, text: string) => {
 
 export const deleteList = (listID: string) => {
   store.dispatch(deleteListAction({ listID: listID }));
+  store.dispatch(deleteTasksByListAction({ listID: listID }));
 };
