@@ -5,6 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { DragDropContext } from "@hello-pangea/dnd";
 import { addList, reorderTasks } from "@/lib/utils";
 import { useAppSelector } from "@/lib/hooks";
+import ToDoListCreator from "./components/to-do-list-creator";
 
 export default function DashboardPage() {
   const tasks = useAppSelector((state) => state.tasks);
@@ -35,13 +36,7 @@ export default function DashboardPage() {
                 />
               ))}
 
-              <Button
-                variant={"outline"}
-                className="mt-2"
-                onClick={() => addList()}
-              >
-                <AddIcon /> Add list
-              </Button>
+              <ToDoListCreator />
             </div>
           </DragDropContext>
         </div>

@@ -98,9 +98,9 @@ export const deleteTask = (taskID: string, listID: string) => {
 };
 
 //List logic
-export const addList = () => {
+export const addList = (value: string) => {
   const id = "list-" + nanoid(8);
-  store.dispatch(addListAction({ listID: id }));
+  store.dispatch(addListAction({ listID: id, textValue: value }));
 };
 
 export const updateListName = (listID: string, text: string) => {

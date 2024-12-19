@@ -28,11 +28,14 @@ const listsSlice = createSlice({
       const { id, name } = action.payload;
       state[id].name = name;
     },
-    addListAction: (state, action: PayloadAction<{ listID: string }>) => {
-      const { listID } = action.payload;
+    addListAction: (
+      state,
+      action: PayloadAction<{ listID: string; textValue: string }>,
+    ) => {
+      const { listID, textValue } = action.payload;
       state[listID] = {
         id: listID,
-        name: "New List",
+        name: textValue,
         taskIDs: [],
       };
     },
