@@ -38,7 +38,7 @@ export default function DashboardPage() {
                   reorderTasks(lists, source, destination);
                 }}
               >
-                <div className="flex h-full gap-3">
+                <div className="flex h-full gap-3" id="draggable-el">
                   {Object.entries(lists).map(([listID, listBody], index) => (
                     <ToDoList
                       listID={listID}

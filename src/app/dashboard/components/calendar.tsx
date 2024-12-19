@@ -3,6 +3,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, {
   Draggable as FCDraggable,
   DropArg,
+  ThirdPartyDraggable,
 } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
@@ -30,7 +31,7 @@ export default function Calendar() {
   useEffect(() => {
     let draggableEl = document.getElementById("draggable-el");
     if (draggableEl) {
-      new FCDraggable(draggableEl, {
+      new ThirdPartyDraggable(draggableEl, {
         itemSelector: ".fc-event",
         eventData: function (eventEl) {
           let title = eventEl.getAttribute("title");
@@ -108,7 +109,7 @@ export default function Calendar() {
   }
 
   return (
-    <div className="">
+    <div className="p-3 mt-[54px]">
       <div className="col-span-8">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
@@ -128,7 +129,7 @@ export default function Calendar() {
           eventClick={(data) => console.log("delete", data)}
         />
       </div>
-      <div
+      {/* <div
         id="draggable-el"
         className="ml-8  border-2 p-2 rounded-md mt-16 lg:h-1/2 bg-violet-50"
       >
@@ -142,7 +143,7 @@ export default function Calendar() {
             {event.title}
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
