@@ -2,14 +2,14 @@ import { DraggableLocation } from "react-beautiful-dnd";
 import { ListMapType } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { store } from "@/redux/store";
+import { store } from "../redux/store";
 import {
   addTaskAction,
   deleteTaskAction,
   deleteTasksByListAction,
   setTaskCompletionAction,
   updateTaskAction,
-} from "@/redux/slices/tasksSlice";
+} from "../redux/slices/tasksSlice";
 import {
   addTaskToListAction,
   deleteListAction,
@@ -17,7 +17,7 @@ import {
   updateListNameAction,
   setListsAction,
   deleteTaskFromListAction,
-} from "@/redux/slices/listsSlice";
+} from "../redux/slices/listsSlice";
 import { nanoid } from "@reduxjs/toolkit";
 
 /**

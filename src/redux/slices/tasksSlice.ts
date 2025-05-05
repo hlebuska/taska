@@ -1,4 +1,4 @@
-import { TaskMapType } from "@/types";
+import { TaskMapType } from "../../types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { current } from "immer";
 

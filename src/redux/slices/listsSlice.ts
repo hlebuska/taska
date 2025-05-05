@@ -1,4 +1,4 @@
-import { ListMapType } from "@/types";
+import { ListMapType } from "../../types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: ListMapType = {
