@@ -1,7 +1,7 @@
 "use client";
-import ActivatedInput from "@/components/ui/activated-input";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import ActivatedInput from "../../../components/ui/activated-input";
+import { Button } from "../../../components/ui/button";
+import { Checkbox } from "../../../components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
