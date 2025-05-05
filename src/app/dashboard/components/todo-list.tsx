@@ -10,21 +10,21 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "../../../components/ui/alert-dialog";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+} from "../../..//components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useEditMode } from "@/lib/hooks";
-import { deleteList, updateListName } from "@/lib/utils";
-import { ITask } from "@/types";
+} from "../../..//components/ui/dropdown-menu";
+import { useEditMode } from "../../../lib/hooks";
+import { deleteList, updateListName } from "../../../lib/utils";
+import { ITask } from "../../../types";
 import { Droppable } from "@hello-pangea/dnd";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EastIcon from "@mui/icons-material/East";

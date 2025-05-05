@@ -9,7 +9,7 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/components/ui/resizable";
+} from "../../components/ui/resizable";
 
 export default function DashboardPage() {
   const tasks = useAppSelector((state) => state.tasks);

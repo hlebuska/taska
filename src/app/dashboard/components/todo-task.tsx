@@ -7,9 +7,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useEditMode } from "@/lib/hooks";
-import { deleteTask, setTaskCompletion, updateTask } from "@/lib/utils";
+} from "../../../components/ui/dropdown-menu";
+import { useEditMode } from "../../../lib/hooks";
+import { deleteTask, setTaskCompletion, updateTask } from "../../../lib/utils";
 import { Draggable } from "@hello-pangea/dnd";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
