@@ -1,20 +1,6 @@
-import { Droppable } from "@hello-pangea/dnd";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DeleteIcon from "@mui/icons-material/Delete";
-import WestIcon from "@mui/icons-material/West";
-import EastIcon from "@mui/icons-material/East";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ToDoTask from "@/app/dashboard/components/todo-task";
-import { ITask } from "@/types";
-import ActivatedInput from "@/components/ui/activated-input";
-import { useEditMode } from "@/lib/hooks";
 import ToDoCreator from "@/app/dashboard/components/todo-creator";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import ToDoTask from "@/app/dashboard/components/todo-task";
+import ActivatedInput from "@/components/ui/activated-input";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,15 +10,28 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChangeEvent, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useEditMode } from "@/lib/hooks";
 import { deleteList, updateListName } from "@/lib/utils";
+import { ITask } from "@/types";
+import { Droppable } from "@hello-pangea/dnd";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EastIcon from "@mui/icons-material/East";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import WestIcon from "@mui/icons-material/West";
+import { ChangeEvent, useState } from "react";
 
 interface IProps {
   listID: string;
