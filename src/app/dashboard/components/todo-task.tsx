@@ -1,18 +1,18 @@
 "use client";
-import { Draggable } from "@hello-pangea/dnd";
 import ActivatedInput from "@/components/ui/activated-input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { useEditMode } from "@/lib/hooks";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useEditMode } from "@/lib/hooks";
 import { deleteTask, setTaskCompletion, updateTask } from "@/lib/utils";
+import { Draggable } from "@hello-pangea/dnd";
+import DeleteIcon from "@mui/icons-material/Delete";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { ChangeEvent } from "react";
 
 interface IProps {
@@ -55,10 +55,9 @@ export default function ToDoTask({
 
   const TaskContent = (
     <div
-      elevation={3}
       onClick={() => turnOnEdit()}
       ref={wrapperRef}
-      className={`gu-mirror flex justify-between items-start border mt-3 rounded-md border-white  backdrop-blur-sm bg px-2 py-3 text-gray-900 shadow-inner shadow-white/10 font-normal ${isCompleted ? "border-gray-200 mx-2 bg-opacity-40 bg-gray-100" : "bg-white mt-3  bg-opacity-90"}`}
+      className={` flex justify-between items-start border mt-3 rounded-md border-white  backdrop-blur-sm bg px-2 py-3 text-gray-900 shadow-inner shadow-white/10 font-normal ${isCompleted ? "border-gray-200 mx-2 bg-opacity-40 bg-gray-100" : "bg-white mt-3  bg-opacity-90"}`}
     >
       <div
         className={`flex flex-col gap-1 w-10/12 ${isCompleted ? "line-through" : ""}`}
@@ -107,7 +106,7 @@ export default function ToDoTask({
           {...dragProvided.dragHandleProps}
           {...dragProvided.draggableProps}
           ref={dragProvided.innerRef}
-          className="fc-event"
+          className="gu-mirror fc-event"
         >
           {TaskContent}
         </div>

@@ -27,7 +27,8 @@ interface UseEditModeProps {
  * @returns {() => void} turnOnEdit - Function to activate edit mode.
  * @returns {() => void} turnOffEdit - Function to deactivate edit mode.
  * @returns {React.RefObject<HTMLElement | null>} wrapperRef - Ref for the edit mode wrapper element.
- * @returns {React.RefObject<HTMLInputElement | null>} inputRef - Ref for the input element.
+ * @returns {React.RefObject<HTMLDivElement | null>} wrapperRef - Ref for the edit mode wrapper element.
+ *
  */
 
 export function useEditMode({
@@ -37,8 +38,9 @@ export function useEditMode({
 }: UseEditModeProps) {
   const [textValue, setTextValue] = useState<string>(text);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const wrapperRef = useRef<HTMLElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const turnOnEdit = () => {
     setIsEdit(true);
