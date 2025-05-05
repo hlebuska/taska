@@ -1,5 +1,5 @@
 import { DraggableLocation } from "react-beautiful-dnd";
-import { ListMapType } from "@/types";
+import { ListMapType } from "../types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { store } from "../redux/store";
