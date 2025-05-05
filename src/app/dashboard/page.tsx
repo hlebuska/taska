@@ -1,5 +1,5 @@
 "use client";
-import ToDoList from "@/app/dashboard/components/todo-list";
+import ToDoList from "../dashboard/components/todo-list";
 import { useAppSelector } from "../../lib/hooks";
 import { reorderTasks } from "../../lib/utils";
 import { DragDropContext } from "@hello-pangea/dnd";

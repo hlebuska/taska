@@ -1,5 +1,5 @@
 "use client";
-import { Providers } from "@/redux/providers";
+import { Providers } from "../redux/providers";
 import Appbar from "../components/ui/appbar";
 import "./globals.css";
 

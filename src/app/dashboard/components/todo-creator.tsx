@@ -1,8 +1,8 @@
-import { useEditMode } from "@/lib/hooks";
+import { useEditMode } from "../../../lib/hooks";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "../../../components/ui/button";
 import ActivatedInput from "../../../components/ui/activated-input";
-import { addTask } from "@/lib/utils";
+import { addTask } from "../../../lib/utils";
 import { ChangeEvent } from "react";
 
 interface IProps {
