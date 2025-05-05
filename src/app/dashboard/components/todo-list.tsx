@@ -1,6 +1,6 @@
-import ToDoCreator from "@/app/dashboard/components/todo-creator";
-import ToDoTask from "@/app/dashboard/components/todo-task";
-import ActivatedInput from "@/components/ui/activated-input";
+import ToDoCreator from "../../../app/dashboard/components/todo-creator";
+import ToDoTask from "../../../app/dashboard/components/todo-task";
+import ActivatedInput from "../../../components/ui/activated-input";
 import {
   AlertDialog,
   AlertDialogAction,
